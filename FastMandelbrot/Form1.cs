@@ -351,7 +351,7 @@ namespace FastMandelbrot {
 
                             // Finally, set the current pixel using a color based on
                             // when the Mandelbrot loop terminated.
-                            bm[localI].SetPixel(x, y, _cTable[iCOunt % _iterations % MAX_COLOR]);
+                            bm[localI].SetPixel(x, y, _cTable[iCount % _iterations % MAX_COLOR]);
                         }
                     }
                 });
