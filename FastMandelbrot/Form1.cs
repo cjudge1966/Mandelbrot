@@ -94,7 +94,11 @@ namespace FastMandelbrot {
         }
 
         /// <summary>
-        /// Load a color table.
+        /// Load one of four color tables.
+        /// 1. Semi-random with smooth transitions.
+        /// 2. Alternating black and white.
+        /// 3. Smooth continuous from black to white.
+        /// 4. Smooth continuous from red to blue.
         /// </summary>
         /// <param name="selector">Selector.</param>
         private void loadColorTable(int selector){
@@ -148,6 +152,7 @@ namespace FastMandelbrot {
             disposeGraphics ();
 
             // Set the number of iterations based on how far we've zoomed in.
+            // This provides sharper details when zooming in.
             _iterations = Math.Min(MAX_ITERATIONS, MIN_ITERATIONS + (int)(1 / _view.Width));
 
             // Create the persistent bitmap sized for the canvas and a Graphics object to draw onto it.
@@ -301,10 +306,20 @@ namespace FastMandelbrot {
 
                 // Create a thread.
                 t[i] = new Thread(() => {
-                    int rgb = 0;
+                    int iCount = 0;
                     double zr;
                     double zi;
 
+                    // Mandelbrot "formula" is:
+                    //   z[n+1] = z[n] ^ 2 + c
+                    // where:
+                    //   c is the complex number (x + yi)
+                    //   z[0] = c
+                    // I'm using zr and zi for the real and imaginary
+                    // parts of z[n], and zrNext and ziNext for the
+                    // real and imaginary parts of z[n+1], and cr and ci[y]
+                    // for the real and imaginary parts of c.
+                            
                     // Allocate z[n+1]
                     double zrNext, ziNext;
 
@@ -312,22 +327,14 @@ namespace FastMandelbrot {
                     for (int x = startX[localI]; x < stopX[localI]; x++) {
                         // For each y in this column...
                         for (int y = 0; y < canvas.Height; y++) {
-                            // Mandelbrot "formula" is:
-                            //   z[n+1] = z[n] ^ 2 + c
-                            // where:
-                            //   c is the complex number (x + yi)
-                            //   z[0] = c
-                            // I'm using zr and zi for the real and imaginary
-                            // parts of z[n], and zrNext and ziNext for the
-                            // real and imaginary parts of z[n+1], and cr and ci[y]
-                            // for the real and imaginary parts of c.
-                            
-                            // Allocate and assign z[0] = c                            
+                            // Allocate and assign z[0] = c
+                            // Note we are using the cached, scaled x and y that were
+                            // calculated in getGraphicsAndTransforms().
                             zr = cr[x];
                             zi = ci[y];
                             
-                            rgb = 0;
-                            while (++rgb < _iterations) {
+                            iCount = 0;
+                            while (++iCount < _iterations) {
                                 // The squares will dominate the answer, so our bailout
                                 // only needs to check them.
                                 zrNext = zr * zr;
@@ -344,7 +351,7 @@ namespace FastMandelbrot {
 
                             // Finally, set the current pixel using a color based on
                             // when the Mandelbrot loop terminated.
-                            bm[localI].SetPixel(x, y, _cTable[rgb % _iterations % MAX_COLOR]);
+                            bm[localI].SetPixel(x, y, _cTable[iCOunt % _iterations % MAX_COLOR]);
                         }
                     }
                 });
@@ -371,6 +378,9 @@ namespace FastMandelbrot {
         // Don't know yet if System.Drawing has a way to cycle the color palette.
         // Here's a hack that cycles the colors in the color table and then - in 
         // a very brute-force way - simply recalcs and redraws the set with the new color table.
+        // Even if System.Drawing doesn't supply palette animation, we could probably
+        // read each pixel's color from the bitmap and reset it to the next color.  This would
+        // be a lot faster than what is currently being done.
         private void colorCycle () {
             for (int j = 0; j < MAX_COLOR; j++) {
                 Color c = _cTable [1];
@@ -445,13 +455,13 @@ namespace FastMandelbrot {
                     dotIterations ();
                     break;
 
-                case Keys.D1:
+                case Keys.D1: // D1 is the "1" key
                     // select color table 1
                     loadColorTable (1);
                     drawMandelbrot ();
                     break;
 
-                case Keys.D2:
+                case Keys.D2: // D2 is the "2" key, etc.
                     // select color table 2
                     loadColorTable (2);
                     drawMandelbrot ();
@@ -478,12 +488,12 @@ namespace FastMandelbrot {
         }
 
         #region zoom-in-box
-        // Track the "drawing" of a rectange for zooming.
+        // Track the "drawing" of a rectange for zooming with the mouse.
         int zoomX = 0;
         int zoomY = 0;
         bool mouseDown = false;
         
-        // Event handler for the when the mouse button ic pressed.
+        // Event handler for the when the mouse button is pressed.
         private void canvas_MouseDown (object sender, MouseEventArgs e) {
             zoomX = e.X;
             zoomY = e.Y;
@@ -496,7 +506,7 @@ namespace FastMandelbrot {
                 // Repaint the current mandelbrot onto the canvas to erase any previous sizing box.
                 PaintView();
 
-                // Now draw a sizing box using the samed mouse-down coordinates and the current
+                // Now draw a sizing box using the mouse-down coordinates and the current
                 // mouse coordinates.
                 Graphics cg = canvas.CreateGraphics();
                 cg.DrawRectangle(Pens.Red, Math.Min(zoomX, e.X), Math.Min(zoomY, e.Y), Math.Abs(e.X - zoomX), Math.Abs(e.Y - zoomY));
