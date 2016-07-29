@@ -1,0 +1,8 @@
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/obj/Debug/FastMandelbrot.Form1.resources
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/obj/Debug/FastMandelbrot.Properties.Resources.resources
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/bin/Debug/FastMandelbrot.exe.config
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/bin/Debug/FastMandelbrot.exe.mdb
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/bin/Debug/FastMandelbrot.exe
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/obj/Debug/FastMandelbrot.exe
+/media/chris/SANDISK_CJ1/Personal/Projects/FastMandelbrot/FastMandelbrot/obj/Debug/FastMandelbrot.exe.mdb

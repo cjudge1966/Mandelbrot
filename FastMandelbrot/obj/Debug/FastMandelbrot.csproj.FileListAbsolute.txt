@@ -1,0 +1,9 @@
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\bin\Debug\FastMandelbrot.exe.config
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\bin\Debug\FastMandelbrot.exe
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\bin\Debug\FastMandelbrot.pdb
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.csprojResolveAssemblyReference.cache
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.Form1.resources
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.Properties.Resources.resources
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.csproj.GenerateResource.Cache
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.exe
+F:\Personal\Projects\FastMandelbrot\FastMandelbrot\obj\Debug\FastMandelbrot.pdb
